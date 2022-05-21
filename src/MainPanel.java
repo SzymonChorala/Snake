@@ -7,6 +7,7 @@ public class MainPanel extends JPanel {
 
     private Snake snake = new Snake();
     private Apple apple = new Apple();
+    private Apple apple1 = new Apple();
     private boolean gameOver = false;
 
     public MainPanel(){
@@ -25,22 +26,25 @@ public class MainPanel extends JPanel {
         Board.draw(g);
         snake.draw(g);
         apple.draw(g);
+        apple1.draw(g);
     }
 
     private class MainTimer extends Timer {
 
         public static int DELAY = 100;
-
         public MainTimer() {
             super(DELAY, e -> {
                 if(!gameOver){
                     snake.move();
                     if (snake.eatApple(apple))
-                        apple = new Apple();
-                    if (snake.isCollsion()) {
+                        apple.displace(snake.getTail());
+                    if (snake.eatApple(apple1))
+                        apple1.displace(snake.getTail());
+                    if (snake.isCollision()) {
                         gameOver = true;
                         MainFrame.score.setText("GAME OVER - Score: " + snake.getSize());
                     }
+                    apple1.move(snake.getTail());
                     snake.ifWall();
                     repaint();
                 }

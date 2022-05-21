@@ -16,7 +16,7 @@ public class Snake {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         for (Point point : getTail()) {
             g.fillRect(point.x*Board.SIZE,point.y*Board.SIZE, Board.SIZE,Board.SIZE);
         }
@@ -29,7 +29,7 @@ public class Snake {
         return body.get(0);
     }
 
-    private List<Point> getTail() {
+    public List<Point> getTail() {
         return body.subList(1, body.size());
     }
 
@@ -54,7 +54,7 @@ public class Snake {
         this.direction = direction;
     }
 
-    public boolean isCollsion() {
+    public boolean isCollision() {
         Point head = getHead();
 
         for (Point point : getTail()) {
