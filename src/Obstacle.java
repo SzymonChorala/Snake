@@ -7,7 +7,6 @@ public class Obstacle implements  Runnable
 {
     private List<Point> body;
     private static Random random = new Random();
-    private int i = 0;
 
     public void run()
     {
@@ -68,8 +67,7 @@ public class Obstacle implements  Runnable
         Point p;
         int collisionCounter = 0;
 
-        i++;
-        if(i%35==0) {
+
             boolean collision = false;
             do {
                 body.clear();
@@ -99,7 +97,7 @@ public class Obstacle implements  Runnable
                     }
                 }
             } while (collision & collisionCounter < 40);
-        }
+
     }
 
     private Point findEmpty(List<Point> exclude)

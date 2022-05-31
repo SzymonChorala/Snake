@@ -60,9 +60,7 @@ public class Apple extends Point implements Runnable {
         int _x, _y;
         boolean collision;
         int collisionCounter = 0;
-        i++;
-        if(i%15==0)
-        {
+
             do {
                 _x = random.nextInt(Math.max(x - 1, 0), Math.min(x + 2, Board.FIELD_X));
                 _y = random.nextInt(Math.max(y - 1, 0), Math.min(y + 2, Board.FIELD_Y));
@@ -80,7 +78,7 @@ public class Apple extends Point implements Runnable {
             x = _x;
             y = _y;
         }
-    }
+
     public void draw(Graphics g){
         g.setColor(Color.RED);
         g.fillOval(x*Board.SIZE,y*Board.SIZE, Board.SIZE,Board.SIZE);

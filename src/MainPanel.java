@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
                     obstacle.displace(snake.getTail());
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep(100);
+                    TimeUnit.MILLISECONDS.sleep(2800);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
                 for(Apple apple : apples) {
                     apple.move(snake.getTail());
                     try {
-                        TimeUnit.MILLISECONDS.sleep(100);
+                        TimeUnit.MILLISECONDS.sleep(1500);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
