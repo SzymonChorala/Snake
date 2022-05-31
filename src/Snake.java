@@ -54,12 +54,21 @@ public class Snake {
         this.direction = direction;
     }
 
-    public boolean isCollision() {
+    public boolean isCollision(List<Obstacle> Obstacles) {
         Point head = getHead();
 
         for (Point point : getTail()) {
             if (head.equals(point)) {
                 return true;
+            }
+        }
+        for (Obstacle obstacle : Obstacles)
+        {
+            for (Point point : obstacle.getBody() )
+            {
+                if (head.equals(point)){
+                    return true;
+                }
             }
         }
         return false;

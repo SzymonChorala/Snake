@@ -2,12 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPanel extends JPanel {
 
     private Snake snake = new Snake();
     private Apple apple = new Apple();
     private Apple apple1 = new Apple();
+
+    private Obstacle obstacle = new Obstacle(snake.getTail());
+
+    private List<Obstacle> obstacles;
     private boolean gameOver = false;
 
     public MainPanel(){
@@ -19,6 +25,8 @@ public class MainPanel extends JPanel {
 
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
+        obstacles = new ArrayList<Obstacle>();
+        obstacles.add(obstacle);
     }
 
     @Override
@@ -27,6 +35,7 @@ public class MainPanel extends JPanel {
         snake.draw(g);
         apple.draw(g);
         apple1.draw(g);
+        obstacle.draw(g);
     }
 
     private class MainTimer extends Timer {
@@ -40,11 +49,12 @@ public class MainPanel extends JPanel {
                         apple.displace(snake.getTail());
                     if (snake.eatApple(apple1))
                         apple1.displace(snake.getTail());
-                    if (snake.isCollision()) {
+                    if (snake.isCollision(obstacles)) {
                         gameOver = true;
                         MainFrame.score.setText("GAME OVER - Score: " + snake.getSize());
                     }
                     apple1.move(snake.getTail());
+                    obstacle.displace(snake.getTail());
                     snake.ifWall();
                     repaint();
                 }

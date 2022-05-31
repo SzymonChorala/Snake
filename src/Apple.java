@@ -54,6 +54,7 @@ public class Apple extends Point {
     {
         int _x, _y;
         boolean collision;
+        int collisionCounter = 0;
         i++;
         if(i%15==0)
         {
@@ -66,10 +67,11 @@ public class Apple extends Point {
                 for (Point point : exclude) {
                     if (p.equals(point)) {
                         collision = true;
+                        collisionCounter++;
                         break;
                     }
                 }
-            } while (collision);
+            } while (collision & collisionCounter < 30);
             x = _x;
             y = _y;
         }
@@ -79,8 +81,4 @@ public class Apple extends Point {
         g.fillOval(x*Board.SIZE,y*Board.SIZE, Board.SIZE,Board.SIZE);
     }
 
-    private void move()
-    {
-
-    }
 }
