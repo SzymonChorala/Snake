@@ -3,12 +3,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Obstacle
+public class Obstacle implements  Runnable
 {
     private List<Point> body;
     private static Random random = new Random();
     private int i = 0;
 
+    public void run()
+    {
+
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     Obstacle(List<Point> exclude)
     {

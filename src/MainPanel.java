@@ -4,16 +4,54 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 
 public class MainPanel extends JPanel {
 
     private Snake snake = new Snake();
     private Apple apple = new Apple();
     private Apple apple1 = new Apple();
-
-    private Obstacle obstacle = new Obstacle(snake.getTail());
+    private Obstacle obstacle1 = new Obstacle(snake.getTail());
 
     private List<Obstacle> obstacles;
+    private List<Apple> apples;
+    Runnable obstacleThread = new Runnable (){
+        public void run()
+        {
+            while(!gameOver) {
+                for (Obstacle obstacle : obstacles)
+                {
+                    obstacle.displace(snake.getTail());
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+    };
+    Runnable appleThread = new Runnable (){
+        public void run()
+        {
+            while(!gameOver) {
+                for(Apple apple : apples) {
+                    apple.move(snake.getTail());
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+
+        }
+    };
+
+
     private boolean gameOver = false;
 
     public MainPanel(){
@@ -26,7 +64,14 @@ public class MainPanel extends JPanel {
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
         obstacles = new ArrayList<Obstacle>();
-        obstacles.add(obstacle);
+        apples = new ArrayList<Apple>();
+        obstacles.add(obstacle1);
+        apples.add(apple);
+        apples.add(apple1);
+        Thread threadO = new Thread(obstacleThread);
+        Thread threadA = new Thread(appleThread);
+        threadO.start();
+        threadA.start();
     }
 
     @Override
@@ -35,26 +80,24 @@ public class MainPanel extends JPanel {
         snake.draw(g);
         apple.draw(g);
         apple1.draw(g);
-        obstacle.draw(g);
+        obstacle1.draw(g);
     }
 
     private class MainTimer extends Timer {
-
         public static int DELAY = 100;
+
         public MainTimer() {
             super(DELAY, e -> {
                 if(!gameOver){
                     snake.move();
-                    if (snake.eatApple(apple))
-                        apple.displace(snake.getTail());
-                    if (snake.eatApple(apple1))
-                        apple1.displace(snake.getTail());
-                    if (snake.isCollision(obstacles)) {
-                        gameOver = true;
-                        MainFrame.score.setText("GAME OVER - Score: " + snake.getSize());
-                    }
-                    apple1.move(snake.getTail());
-                    obstacle.displace(snake.getTail());
+                    for(Apple apple :apples)
+                        if (snake.eatApple(apple))
+                            apple.displace(snake.getTail());
+                        if (snake.isCollision(obstacles)) {
+                            gameOver = true;
+                            MainFrame.score.setText("GAME OVER - Score: " + snake.getSize());
+
+                        }
                     snake.ifWall();
                     repaint();
                 }

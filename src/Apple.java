@@ -3,9 +3,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
-public class Apple extends Point {
+public class Apple extends Point implements Runnable {
     private static Random random = new Random();
     private int i = 0;
+
+    public void run()
+    {
+
+    }
 
     public Apple() {
         super(random.nextInt(Board.FIELD_X),random.nextInt(Board.FIELD_Y));
